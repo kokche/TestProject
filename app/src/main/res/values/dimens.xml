@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_big">20sp</dimen>
+    <dimen name="normal_vertical_margin">16dp</dimen>
+    <dimen name="big_vertical_margin">20dp</dimen>
+    <dimen name="normal_horizontal_margin">16dp</dimen>
+</resources>

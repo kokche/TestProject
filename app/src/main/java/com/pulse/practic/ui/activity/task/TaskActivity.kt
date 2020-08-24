@@ -1,7 +1,9 @@
 package com.pulse.practic.ui.activity.task
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -11,16 +13,26 @@ import com.pulse.practic.databinding.ActivityMainBinding
 class TaskActivity : AppCompatActivity() {
 
 
-    val navController by lazy {
+    private val navController by lazy {
         findNavController(R.id.nav_host_fragment)
     }
 
-    lateinit var binding: ActivityMainBinding
+    val binding: ActivityMainBinding by lazy {
+        DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        NavigationUI.setupActionBarWithNavController(this,navController)
-
+        binding
+        NavigationUI.setupActionBarWithNavController(this, navController)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> navController.popBackStack()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 }

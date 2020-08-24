@@ -3,14 +3,11 @@ package com.pulse.practic.data
 import androidx.recyclerview.widget.DiffUtil
 import com.pulse.practic.model.Tasks
 
-class MyDiffUtil(var oldItems: List<Tasks>, var newItems: List<Tasks>) : DiffUtil.Callback() {
-    override fun getOldListSize(): Int = oldListSize
+class MyDiffUtil : DiffUtil.ItemCallback<Tasks>() {
 
-    override fun getNewListSize(): Int = newListSize
+    override fun areItemsTheSame(oldItem: Tasks, newItem: Tasks): Boolean =
+        oldItem.id == newItem.id
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldItems[oldItemPosition].id == newItems[newItemPosition].id
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldItems[oldItemPosition] == newItems[newItemPosition]
+    override fun areContentsTheSame(oldItem: Tasks, newItem: Tasks): Boolean =
+        oldItem == newItem
 }

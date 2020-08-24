@@ -1,43 +1,55 @@
 package com.pulse.practic.ui.activity.task.fragment.main
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.pulse.practic.App
 import com.pulse.practic.R
-import com.pulse.practic.data.ListAdapter
-import com.pulse.practic.databinding.FragmentTasksBinding
+import com.pulse.practic.data.MyListAdapter
+import com.pulse.practic.databinding.FragmentMainBinding
+import com.pulse.practic.model.Tasks
+import com.pulse.practic.utils.showToast
+import kotlinx.android.synthetic.main.fragment_edit_task.*
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
+import kotlinx.android.synthetic.main.fragment_main.floatingActionButton
 
 class MainFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
-
-    private lateinit var binding:FragmentTasksBinding
+    private val myDatabase by lazy { App.instance.database.tasksDao() }
+    private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTasksBinding.inflate(inflater, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
     override fun onStart() {
         super.onStart()
-        recyclerView = binding.root.list_item
-        viewManager = LinearLayoutManager(MainFragment().context)
-        var items = App().database.tasksDao().getAll()
-        viewAdapter = ListAdapter(items)
-        floatingActionButton.setOnClickListener (Navigation.createNavigateOnClickListener(R.id.action_to_tasksFragment))
+        val adapter = MyListAdapter()
+        rv_items.adapter = adapter
+        adapter.submitList(myDatabase.getAll())
+        adapter.setOnItemClickListener(object : MyListAdapter.OnItemClickListener {
+            override fun setOnItemClickListener(tasks: Tasks, position: Int) {
+                val directions = MainFragmentDirections
+                    .actionMainFragmentToEditTaskFragment(tasks)
+                Navigation.findNavController(rv_items).navigate(directions)
+
+            }
+
+            override fun setOnLongItemClickListener(tasks: Tasks, position: Int) {
+                showToast("long")
+            }
+        })
+
+        floatingActionButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_to_tasksFragment))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
     }
 }
