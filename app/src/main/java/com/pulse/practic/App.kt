@@ -1,35 +1,43 @@
 package com.pulse.practic
 
 import android.app.Application
-import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.pulse.practic.data.TasksDatabase
+import com.pulse.practic.di.AppModule
+import com.pulse.practic.di.NetworkModule
+import com.pulse.practic.di.RepositoryModule
+import com.pulse.practic.di.ViewModelModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
+import org.koin.dsl.module
 
 
 class App : Application(){
    companion object {
        lateinit var instance: App
 
-       private val MIGRATION_1_2 = object : Migration(1, 2) {
-           override fun migrate(database: SupportSQLiteDatabase) {
-               database.execSQL("ALTER TABLE tasks ADD COLUMN isChecked BOOLEAN default false");
-           }
-       }
-
    }
-    val database by lazy {
-        Room.databaseBuilder<TasksDatabase>(this, TasksDatabase::class.java, "database")
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
-    }
-
-
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        database
+        initKoin()
+    }
+
+    private fun initKoin() {
+        startKoin {
+            module {
+                androidLogger(Level.ERROR)
+                androidContext(this@App)
+                modules(
+                    listOf(
+                        AppModule.dataModule,
+                        NetworkModule.networkModule,
+                        ViewModelModule.viewModelModule,
+                        RepositoryModule.repositoryModule
+                    )
+                )
+            }
+        }
     }
 }

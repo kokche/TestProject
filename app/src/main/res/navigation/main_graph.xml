@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.pulse.practic.ui.activity.task.fragment.main.MainFragment"
+        android:name="com.pulse.practic.ui.activity.task.fragment.main.ToDoListFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -37,6 +37,6 @@
         tools:layout="@layout/fragment_edit_task" >
         <argument
             android:name="itemTask"
-            app:argType="com.pulse.practic.model.Tasks" />
+            app:argType="com.pulse.practic.data.database.room.tabel.Task" />
     </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.pulse.practic.utils
+package com.pulse.practic.util.extension
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment
