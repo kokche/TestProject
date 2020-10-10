@@ -20,23 +20,22 @@ class ToDoListFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_mai
     private val viewModel by viewModel<ToDoViewModel>()
 
     override fun initUI() {
-        initRecycler()
         initListener()
+        initBinding()
         viewModel.requestAll()
         observeData()
         setHasOptionsMenu(true);
 
     }
 
-    override fun observeData() {
-        viewModel.getTaskData().observe(viewLifecycleOwner, {
-            adapter.submitList(it)
-        })
+    private fun initBinding() {
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
     }
 
-    private fun initRecycler() {
-        rv_items.adapter = adapter
+    override fun observeData() {
     }
+
 
     private fun initListener() {
         floatingActionButton.setOnClickListener {
