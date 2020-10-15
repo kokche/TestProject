@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('clean proj') {
       steps {
-        sh 'bash ./gradlew compileDebug --stacktrace'
+        sh './gradlew compileDebugSources'
         echo 'sucsess'
       }
     }
