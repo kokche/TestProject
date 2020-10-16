@@ -5,6 +5,7 @@ pipeline {
       steps {
         sh './gradlew compileDebugSources'
         echo 'sucsess'
+        slackSend(failOnError: true, notifyCommitters: true, username: 'kokche')
       }
     }
 
